@@ -1,0 +1,220 @@
+{
+  "common": {
+    "appName": "Roo_mue",
+    "languageToggleLabel": "Change language",
+    "switchToThai": "ไทย",
+    "switchToEnglish": "English",
+    "prevSlide": "Previous slide",
+    "nextSlide": "Next slide"
+  },
+  "nav": {
+    "home": "Home",
+    "history": "History",
+    "profile": "Profile",
+    "login": "Log in",
+    "register": "Sign up"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "subtitle": "Welcome back",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "or": "or",
+      "google": "Continue with Google",
+      "forgot": "Forgot password?",
+      "noAccount": "No account yet? Sign up",
+      "invalid": "Invalid email or password"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "step1Heading": "Enter your email to receive a verification code",
+      "email": "Email",
+      "send": "Send code",
+      "step2Heading": "Set a new password",
+      "sentTo": "We sent a 6-digit code to",
+      "otpLabel": "Verification code",
+      "newPassword": "New password",
+      "passwordHint": "At least 8 characters",
+      "submit": "Change password",
+      "back": "Back",
+      "backToLogin": "Back to log in",
+      "success": "Your password has been changed",
+      "devCode": "Test code (dev mode):",
+      "resend": "Resend code",
+      "resendIn": "Resend in {seconds}s",
+      "errors": {
+        "user_not_found": "No account found for this email",
+        "invalid_email": "Invalid email address",
+        "weak_password": "Password must be at least 8 characters",
+        "invalid_otp": "Please enter the 6-digit code",
+        "otp_failed": "Code is incorrect or expired",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "register": {
+      "title": "Sign up",
+      "haveAccount": "Already have an account? Log in",
+      "step1": {
+        "heading": "Choose a sign-up method",
+        "google": "Sign up with Google",
+        "emailLabel": "Email",
+        "next": "Next"
+      },
+      "step2": {
+        "heading": "Your details",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "nationalId": "National ID",
+        "disabilityCard": "Disability card number",
+        "disabilityCardHint": "(if applicable)",
+        "password": "Password",
+        "passwordHint": "At least 8 characters",
+        "next": "Next",
+        "back": "Back"
+      },
+      "step3": {
+        "heading": "Verify your email",
+        "sentTo": "We sent a 6-digit code to",
+        "resend": "Resend code",
+        "resendIn": "Resend in {seconds}s",
+        "submit": "Verify and create account",
+        "back": "Back",
+        "devCode": "Test code (dev mode):"
+      },
+      "errors": {
+        "invalid_email": "Invalid email address",
+        "email_taken": "This email is already registered",
+        "weak_password": "Password must be at least 8 characters",
+        "missing_name": "Please enter your first and last name",
+        "invalid_national_id": "National ID must be 13 digits",
+        "invalid_otp": "Please enter the 6-digit code",
+        "otp_failed": "Code is incorrect or expired",
+        "generic": "Something went wrong. Please try again."
+      }
+    }
+  },
+  "app": {
+    "greeting": "Welcome",
+    "signOut": "Sign out",
+    "back": "Back",
+    "context": {
+      "title": "Select communication context",
+      "subtitle": "Pick the situation type so translation is more accurate",
+      "emergencyTitle": "Emergency",
+      "emergencyDesc": "Fast mode for crises",
+      "everydayTitle": "Everyday situation",
+      "everydayDesc": "Day-to-day communication"
+    },
+    "emergency": {
+      "submenuTitle": "Choose how to communicate",
+      "preset": "Use pre-set phrases",
+      "presetDesc": "Common phrases for emergencies",
+      "camera": "Translate via camera",
+      "cameraDesc": "Capture signs with the camera and translate with AI"
+    },
+    "preset": {
+      "title": "Pre-set phrases",
+      "phrases": {
+        "help": "I need help",
+        "police": "Call the police please",
+        "lost": "I am lost",
+        "pain": "I am in pain",
+        "ambulance": "Call an ambulance"
+      }
+    },
+    "everyday": {
+      "title": "Choose a category",
+      "categories": {
+        "hospital": "Hospital",
+        "grocery": "Shop",
+        "restaurant": "Restaurant",
+        "transport": "Public transport",
+        "school": "School",
+        "other": "Other"
+      }
+    },
+    "camera": {
+      "permissionTitle": "Allow camera access?",
+      "permissionBody": "We use the camera only to capture your hand gestures. Video is never recorded or sent off your device.",
+      "allow": "Allow",
+      "cancel": "Cancel",
+      "starting": "Starting camera…",
+      "denied": "Could not access the camera. Please allow it in your browser and try again.",
+      "insecure": "The camera only works over https or on localhost.",
+      "retry": "Try again",
+      "modelLoading": "Loading hand-tracking model…",
+      "modelError": "Could not load the tracking model. You can still translate.",
+      "handsDetected": "{count} hand(s) detected",
+      "noHands": "No hands detected yet",
+      "translate": "Translate signs",
+      "translating": "Translating…",
+      "stop": "Stop camera",
+      "faceAnalytics": "Face analytics",
+      "smile": "Smile",
+      "eyes": "Eyes open",
+      "mouth": "Mouth movement",
+      "live": "Analyzing in real time",
+      "raiseHand": "Raise your hand in frame to begin",
+      "recognized": "Recognized",
+      "alternative": "Alternative",
+      "sentence": "Sentence",
+      "clear": "Clear",
+      "save": "Save sentence",
+      "saved": "Saved to history",
+      "play": "Read aloud"
+    },
+    "result": {
+      "title": "Pick the correct meaning",
+      "confidence": "Confidence",
+      "edit": "Edit word",
+      "editPlaceholder": "Type the correct meaning",
+      "confirm": "Confirm",
+      "play": "Read aloud",
+      "saved": "Saved to history",
+      "translateAgain": "Translate again"
+    },
+    "history": {
+      "title": "Translation history",
+      "searchPlaceholder": "Search sentences...",
+      "empty": "No translation history yet",
+      "play": "Read aloud",
+      "source": { "camera": "From camera", "preset": "Pre-set phrase" }
+    },
+    "profile": {
+      "title": "Profile",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "nationalId": "National ID",
+      "disabilityCard": "Disability card number",
+      "none": "-"
+    }
+  },
+  "landing": {
+    "tagline": "Communicate faster, in the moment that matters",
+    "headlineLine1": "Translate sign language",
+    "headlineLine2": "into Thai instantly",
+    "subtext": "Designed for the deaf and hard-of-hearing community. Use your camera to capture sign language; AI translates it and offers 2 candidate meanings, with read-aloud audio. Built for emergencies, hospitals, filing reports, and everyday life.",
+    "ctaPrimary": "Get started free",
+    "ctaSecondary": "I already have an account",
+    "features": {
+      "capture": { "title": "Capture gestures", "subtitle": "Via your device camera" },
+      "ai": { "title": "Instant AI translation", "subtitle": "90%+ accuracy" },
+      "meanings": { "title": "2 meanings", "subtitle": "Pick the correct one" },
+      "tts": { "title": "Read aloud", "subtitle": "Thai text-to-speech" },
+      "emergency": { "title": "Emergency", "subtitle": "Fast mode for crises" },
+      "history": { "title": "Saved history", "subtitle": "Search past sentences" }
+    },
+    "sponsors": {
+      "heading": "PROJECT SPONSORS",
+      "vip": "VIP Sponsors",
+      "platinum": "Platinum",
+      "gold": "Gold",
+      "silver": "Silver",
+      "organizedBy": "Organized by",
+      "partners": "Partners & Supporters"
+    }
+  }
+}

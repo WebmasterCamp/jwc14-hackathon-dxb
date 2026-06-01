@@ -6,10 +6,15 @@ import { useTranslations } from "next-intl";
 import { Icons, type LucideIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
-type Tab = { href: string; key: "home" | "history" | "profile"; Icon: LucideIcon };
+type Tab = {
+  href: string;
+  key: "home" | "call" | "history" | "profile";
+  Icon: LucideIcon;
+};
 
 const TABS: Tab[] = [
   { href: "/app", key: "home", Icon: Icons.camera },
+  { href: "/app/call", key: "call", Icon: Icons.call },
   { href: "/app/history", key: "history", Icon: Icons.history },
   { href: "/app/profile", key: "profile", Icon: Icons.profile },
 ];

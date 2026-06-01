@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Icons, type LucideIcon } from "@/components/icons";
 import { PresetPhrases } from "./preset-phrases";
+import { BasicSigns } from "./basic-signs";
 import { CameraTranslate } from "./camera-translate";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,8 @@ type View =
   | "context"
   | "emergencyMenu"
   | "emergencyPreset"
+  | "everydayMenu"
+  | "basicSigns"
   | "everydayCategories"
   | "camera";
 
@@ -110,11 +113,49 @@ export function HomeFlow() {
     );
   }
 
+  // ---- Everyday submenu: basic signs reference vs camera ----
+  if (view === "everydayMenu") {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <BackBar onBack={() => setView("context")} />
+        <h2 className="mb-4 text-xl font-extrabold">{t("everyday.menuTitle")}</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <ActionCard
+            Icon={Icons.presetPhrases}
+            title={t("everyday.basics")}
+            desc={t("everyday.basicsDesc")}
+            accent="blue"
+            onClick={() => setView("basicSigns")}
+          />
+          <ActionCard
+            Icon={Icons.camera}
+            title={t("everyday.cameraOption")}
+            desc={t("everyday.cameraOptionDesc")}
+            accent="blue"
+            onClick={() => setView("everydayCategories")}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // ---- Everyday: 20 basic daily-life signs reference ----
+  if (view === "basicSigns") {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <BackBar onBack={() => setView("everydayMenu")} />
+        <h2 className="text-xl font-extrabold">{t("basicSigns.title")}</h2>
+        <p className="mb-4 text-sm text-muted-foreground">{t("basicSigns.subtitle")}</p>
+        <BasicSigns />
+      </div>
+    );
+  }
+
   // ---- Everyday: category picker ----
   if (view === "everydayCategories") {
     return (
       <div className="mx-auto max-w-3xl">
-        <BackBar onBack={() => setView("context")} />
+        <BackBar onBack={() => setView("everydayMenu")} />
         <h2 className="mb-4 text-xl font-extrabold">{t("everyday.title")}</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {CATEGORIES.map(({ key, Icon }) => (
@@ -155,7 +196,7 @@ export function HomeFlow() {
           title={t("context.everydayTitle")}
           desc={t("context.everydayDesc")}
           accent="blue"
-          onClick={() => setView("everydayCategories")}
+          onClick={() => setView("everydayMenu")}
         />
       </div>
     </div>

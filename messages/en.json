@@ -127,6 +127,11 @@
     },
     "everyday": {
       "title": "Choose a category",
+      "menuTitle": "Choose what to do",
+      "basics": "20 basic sign-language words",
+      "basicsDesc": "Everyday gestures — learn and read aloud",
+      "cameraOption": "Translate via camera",
+      "cameraOptionDesc": "Pick a category and capture signs with the camera",
       "categories": {
         "hospital": "Hospital",
         "grocery": "Shop",
@@ -164,7 +169,12 @@
       "clear": "Clear",
       "save": "Save sentence",
       "saved": "Saved to history",
-      "play": "Read aloud"
+      "play": "Read aloud",
+      "editWord": "Edit word",
+      "removeWord": "Remove word",
+      "editHint": "Tap a word to correct it, or the cross to remove it",
+      "suggested": "Suggested sentence",
+      "words": "Recognized words"
     },
     "result": {
       "title": "Pick the correct meaning",
@@ -175,6 +185,13 @@
       "play": "Read aloud",
       "saved": "Saved to history",
       "translateAgain": "Translate again"
+    },
+    "basicSigns": {
+      "title": "20 basic Thai signs",
+      "subtitle": "For everyday use",
+      "meaning": "Meaning",
+      "howto": "How to sign",
+      "play": "Read aloud"
     },
     "history": {
       "title": "Translation history",

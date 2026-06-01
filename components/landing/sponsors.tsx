@@ -4,7 +4,7 @@ import { Marquee } from "./marquee";
 import { Icons } from "@/components/icons";
 
 const VIP = ["ThaiCom Foundation", "DreamAble"];
-const PLATINUM = "Featured Platinum Sponsor";
+const PLATINUM = "9arm";
 const GOLD = ["Dek-D", "Seed Webs", "Moonshot", "Binance TH"];
 const SILVER = [
   "Creators Garten",

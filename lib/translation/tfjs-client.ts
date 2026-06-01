@@ -40,6 +40,15 @@ function getLabels() {
   return labelsPromise;
 }
 
+/** The vocabulary the model knows — used for correction quick-pick suggestions. */
+export async function getKnownLabels(): Promise<string[]> {
+  try {
+    return await getLabels();
+  } catch {
+    return [];
+  }
+}
+
 /** Warm up the backend + model so the first real translate isn't slow. */
 export async function warmUp(): Promise<void> {
   // Prefer the GPU (WebGL) backend; fall back to whatever is available.

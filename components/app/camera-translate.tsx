@@ -1,14 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Icons } from "@/components/icons";
 import { FaceAnalyticsBar } from "./face-analytics-bar";
+import { EditableSentence } from "./editable-sentence";
 import { useSignRecognition } from "@/lib/call/use-sign-recognition";
 import { useSpeak } from "@/lib/tts";
 import { saveSession } from "@/app/app/actions";
+import { getKnownLabels } from "@/lib/translation/tfjs-client";
+import { composeSentences } from "@/lib/sentence/compose";
+import { cn } from "@/lib/utils";
 import type { Candidate } from "@/lib/translation";
 
 type Phase = "permission" | "starting" | "denied" | "live";
@@ -36,6 +40,21 @@ export function CameraTranslate({
   const [liveSecond, setLiveSecond] = useState<Candidate | null>(null);
   const [sentence, setSentence] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
+  const [vocab, setVocab] = useState<string[]>([]);
+  const [selectedIdx, setSelectedIdx] = useState(0);
+
+  useEffect(() => {
+    getKnownLabels().then(setVocab).catch(() => {});
+  }, []);
+
+  // Compose complete-sentence suggestions from the recognized words.
+  const suggestions = useMemo(
+    () => composeSentences(sentence, locale),
+    [sentence, locale]
+  );
+  useEffect(() => setSelectedIdx(0), [sentence]);
+  const chosenText =
+    suggestions[selectedIdx]?.text ?? suggestions[0]?.text ?? sentence.join(" ");
 
   const stopStream = useCallback(() => {
     streamRef.current?.getTracks().forEach((tr) => tr.stop());
@@ -95,7 +114,7 @@ export function CameraTranslate({
   useEffect(() => () => stopStream(), [stopStream]);
 
   async function saveSentence() {
-    const text = sentence.join(" ");
+    const text = chosenText.trim();
     if (!text) return;
     await saveSession({
       mode,
@@ -187,14 +206,37 @@ export function CameraTranslate({
           )}
         </div>
 
+        {/* Composed sentence suggestions */}
+        {suggestions.length > 0 && (
+          <div>
+            <p className="mb-1 text-xs font-medium text-muted-foreground">{t("suggested")}</p>
+            <div className="space-y-1.5">
+              {suggestions.map((s, i) => {
+                const active = i === selectedIdx;
+                return (
+                  <button
+                    key={`${s.text}-${i}`}
+                    type="button"
+                    onClick={() => setSelectedIdx(i)}
+                    aria-pressed={active}
+                    className={cn(
+                      "w-full rounded-lg border-2 p-3 text-left text-lg font-semibold transition-colors",
+                      active ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"
+                    )}
+                  >
+                    {s.text}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Recognized words (editable / correctable) */}
         <div>
-          <p className="mb-1 text-xs font-medium text-muted-foreground">{t("sentence")}</p>
+          <p className="mb-1 text-xs font-medium text-muted-foreground">{t("words")}</p>
           <div className="min-h-12 rounded-lg bg-secondary/60 p-3">
-            {sentence.length > 0 ? (
-              <p className="text-lg font-semibold leading-relaxed">{sentence.join(" ")}</p>
-            ) : (
-              <span className="text-sm text-muted-foreground">—</span>
-            )}
+            <EditableSentence words={sentence} onChange={setSentence} suggestions={vocab} />
           </div>
         </div>
 
@@ -203,8 +245,8 @@ export function CameraTranslate({
         <div className="mt-auto grid grid-cols-2 gap-2">
           <Button
             variant="outline"
-            onClick={() => say(sentence.join(" "))}
-            disabled={sentence.length === 0}
+            onClick={() => say(chosenText)}
+            disabled={!chosenText}
           >
             <Icons.playAudio className="size-5" aria-hidden />
             {t("play")}

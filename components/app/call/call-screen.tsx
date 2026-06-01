@@ -50,7 +50,7 @@ export function CallScreen() {
     try {
       const constraints: MediaStreamConstraints =
         role === "signer"
-          ? { video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true }
+          ? { video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }, audio: true }
           : { audio: true };
       const media = await navigator.mediaDevices.getUserMedia(constraints);
       setStream(media);

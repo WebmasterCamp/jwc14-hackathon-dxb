@@ -14,6 +14,10 @@ import type { Candidate } from "@/lib/translation";
 const HOLISTIC_CDN = "https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1675471629";
 const CONSISTENCY = 4;
 const THRESHOLD = 0.6;
+// Efficiency knobs: cap Holistic to ~24fps and run the LSTM at most ~11/s,
+// and only while at least one hand is visible.
+const SEND_INTERVAL_MS = 1000 / 24;
+const INFER_INTERVAL_MS = 90;
 
 const HAND_CONNECTIONS: [number, number][] = [
   [0, 1], [1, 2], [2, 3], [3, 4],
@@ -67,6 +71,8 @@ export function useSignRecognition({
     let inferBusy = false;
     let faceTick = 0;
     let modelOk = false;
+    let lastSend = 0;
+    let lastInfer = 0;
 
     function onResults(results: HolisticResults) {
       seq.push(extractKeypoints(results));
@@ -83,7 +89,16 @@ export function useSignRecognition({
 
       drawOverlay(canvasRef.current, videoRef.current, results);
 
-      if (modelOk && !inferBusy && seq.length >= SEQ_LEN) {
+      // Run the LSTM only while hands are visible and at a throttled rate.
+      const now = performance.now();
+      if (
+        modelOk &&
+        !inferBusy &&
+        hands > 0 &&
+        seq.length >= SEQ_LEN &&
+        now - lastInfer >= INFER_INTERVAL_MS
+      ) {
+        lastInfer = now;
         inferBusy = true;
         predictSequence(seq.slice())
           .then(([c0, c1]) => {
@@ -107,7 +122,9 @@ export function useSignRecognition({
     async function pump() {
       const video = videoRef.current;
       if (!running || !video) return;
-      if (holistic && video.readyState >= 2) {
+      const now = performance.now();
+      if (holistic && video.readyState >= 2 && now - lastSend >= SEND_INTERVAL_MS) {
+        lastSend = now;
         try {
           await holistic.send({ image: video });
         } catch {

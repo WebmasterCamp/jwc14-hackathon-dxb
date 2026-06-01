@@ -6,9 +6,15 @@ import type { Candidate } from "./types";
 
 const BASE = "/models/thsl";
 
+// Disable debug checks for a small inference speedup.
+tf.enableProdMode();
+
 let modelPromise: Promise<tf.LayersModel> | null = null;
 let labelsPromise: Promise<string[]> | null = null;
 let available: boolean | null = null;
+
+// Reused across inferences to avoid per-call allocation / GC churn.
+const inputBuffer = new Float32Array(SEQ_LEN * FEATURE_DIM);
 
 /** True once we've confirmed the converted model is actually hosted. */
 export async function isModelAvailable(): Promise<boolean> {
@@ -34,14 +40,20 @@ function getLabels() {
   return labelsPromise;
 }
 
-/** Warm up the model + backend so the first real translate isn't slow. */
+/** Warm up the backend + model so the first real translate isn't slow. */
 export async function warmUp(): Promise<void> {
+  // Prefer the GPU (WebGL) backend; fall back to whatever is available.
+  try {
+    if (tf.getBackend() !== "webgl") await tf.setBackend("webgl");
+  } catch {
+    /* keep default backend */
+  }
+  await tf.ready();
+
   const model = await getModel();
   await getLabels();
-  const zeros = tf.zeros([1, SEQ_LEN, FEATURE_DIM]);
-  const out = model.predict(zeros) as tf.Tensor;
+  const out = tf.tidy(() => model.predict(tf.zeros([1, SEQ_LEN, FEATURE_DIM])) as tf.Tensor);
   await out.data();
-  zeros.dispose();
   out.dispose();
 }
 
@@ -55,17 +67,18 @@ export async function predictSequence(
   const model = await getModel();
   const labels = await getLabels();
 
-  const flat = new Float32Array(SEQ_LEN * FEATURE_DIM);
+  // Fill the reused buffer; pad the front with zeros if fewer than 30 frames.
+  inputBuffer.fill(0);
   const recent = frames.slice(-SEQ_LEN);
-  const offset = SEQ_LEN - recent.length; // pad at the front
+  const offset = SEQ_LEN - recent.length;
   for (let f = 0; f < recent.length; f++) {
-    flat.set(recent[f], (offset + f) * FEATURE_DIM);
+    inputBuffer.set(recent[f], (offset + f) * FEATURE_DIM);
   }
 
-  const input = tf.tensor(flat, [1, SEQ_LEN, FEATURE_DIM]);
-  const logits = model.predict(input) as tf.Tensor;
+  const logits = tf.tidy(
+    () => model.predict(tf.tensor(inputBuffer, [1, SEQ_LEN, FEATURE_DIM])) as tf.Tensor
+  );
   const scores = Array.from(await logits.data());
-  input.dispose();
   logits.dispose();
 
   const ranked = scores
